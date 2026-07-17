@@ -338,6 +338,9 @@ jobs:
           bun run test:architecture
           bun run test:updater
 
+      - name: Install patchelf for bundled library RPATH
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq patchelf
+
       - name: Build and package Linux AppImage
         working-directory: packages/electron
         env:

@@ -22,7 +22,7 @@
     "Bun available for sidecar compilation",
     "macOS: Xcode + build tools for notarized packaging",
     "Windows: NSIS installed for installer creation",
-    "Linux: native x64 or arm64 host (no cross-arch packaging); FUSE/libfuse2 to run AppImages, or APPIMAGE_EXTRACT_AND_RUN=1"
+    "Linux: native x64 or arm64 host (no cross-arch packaging); FUSE/libfuse2 to run AppImages, or APPIMAGE_EXTRACT_AND_RUN=1; zlib1g (libz.so.1) for Electron runtime"
   ],
   "scripts": {
     "dev": "node ./scripts/electron-dev.mjs",
