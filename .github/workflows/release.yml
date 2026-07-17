@@ -124,6 +124,7 @@ jobs:
 
   build-desktop-electron-macos:
     needs: create-release
+    if: ${{ secrets.APPLE_CERTIFICATE != '' }}
     runs-on: macos-26
     strategy:
       fail-fast: false
@@ -165,6 +166,7 @@ jobs:
             opencode-cli-${{ runner.os }}-${{ matrix.arch }}-
 
       - name: Install Apple Certificate
+        if: ${{ secrets.APPLE_CERTIFICATE != '' }}
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -209,6 +211,7 @@ jobs:
           bun run verify:opencode-cli:packaged
 
       - name: Verify signature + entitlements + notarization
+        if: ${{ secrets.APPLE_CERTIFICATE != '' }}
         run: |
           set -euo pipefail
 
@@ -502,6 +505,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   combine-electron-manifests:
+    if: ${{ always() && secrets.APPLE_CERTIFICATE != '' }}
     needs: [create-release, build-desktop-electron-macos]
     runs-on: ubuntu-latest
     steps:
@@ -546,6 +550,7 @@ jobs:
     secrets: inherit
 
   finalize-release:
+    if: ${{ always() && !cancelled() }}
     needs: [create-release, build-desktop-electron-macos, build-desktop-electron-linux, publish-electron-linux, build-desktop-electron-windows, publish-npm, combine-electron-manifests, mobile-release]
     runs-on: ubuntu-latest
     env:
